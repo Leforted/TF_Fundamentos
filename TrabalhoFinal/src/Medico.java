@@ -34,9 +34,10 @@ public class Medico {
     public void setEspecialidade(String especialidade){
         this.especialidade = especialidade;
     }
-
-    public String toString(){
-        return ("   CRM: "+ this.crm +"\n   Nome: "+ this.nome +"\n   Especialidade: "+ this.especialidade);
+    
+    @Override
+    public String toString() {
+        return "Médico [CRM=" + crm + ", Nome=" + nome + ", Especialidade=" + especialidade + "]";
     }
 
 

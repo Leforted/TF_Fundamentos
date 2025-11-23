@@ -25,7 +25,8 @@ public class Paciente {
         this.nome = nome;
     }
 
-    public String toString(){
-        return ("   Código: " + this.codigo + "\n   Nome: " + this.nome);
+    @Override
+    public String toString() {
+        return "Cód: " + codigo + " - Nome: " + nome;
     }
 }

@@ -1,125 +1,154 @@
 public class Agenda {
-    private Consulta consultas[];
-    private int indice;
-
+    private final Consulta[] consultas;
+    private int index;
 
     public Agenda(){
         this.consultas = new Consulta[40];
-        this.indice = 0;
+        this.index = 0;
+    }
+
+    public int getIndex(){
+        return index;
     }
 
     public boolean adicionarConsulta(Consulta consulta){
-        if(this.indice < 40){
-            this.consultas[this.indice] = consulta;
-            this.indice++;
-            return true;
-        }
-        return false;
+        if (index == 40) return false;
+        if (!consulta.getData().isValidDate()) return false;
+
+        this.consultas[index] = consulta;
+        this.index++;
+        return true;
     }
-    public boolean removerConsulta(int nro){
-        int posicao = buscaPosicao(nro);
-        if(posicao != -1){
-            for (int i = posicao; i < this.indice-1; i++) {
-                this.consultas[i] = this.consultas[i + 1];
-            }
-            this.consultas[this.indice - 1] = null;
-            this.indice--;
-            return true;
+
+    public int buscarPosicao(int numeroConsulta) {
+        int position = -1;
+        for (int i = 0; i < this.index; i++) {
+            if (consultas[i].getNro() == numeroConsulta) position = i;
         }
-        return false;
+        return position;
     }
-    public Consulta buscarConsultaPorNro(int nro){
-        for(int i=0; i < this.indice; i++){
-            if(this.consultas[i].getNro() == nro){
-                return this.consultas[i];
-            }
-        }
-        return null;
+
+    public Consulta buscarConsultaPorNumero(int numeroConsulta) {
+        int position = buscarPosicao(numeroConsulta);
+        return (position != -1) ? consultas[position] : null;
     }
-    public int buscaPosicao(int nro){
-        for(int i=0; i<this.indice; i++){
-            if(this.consultas[i].getNro() == nro){
-                return i;
-            }
+
+    public boolean removerConsulta(int numeroConsulta) {
+        int position = buscarPosicao(numeroConsulta);
+        if (position == -1) return false;
+
+        for (int i = position; i < this.index - 1; i++) {
+            consultas[i] = consultas[i + 1];
         }
-        return -1;
+        consultas[index - 1] = null;
+        this.index--;
+        return true;
     }
-    public Consulta[] buscarConsultaMedico(String nomeMedico){
-        int total = 0;
-        for(int i =0; i<this.indice; i++){
-            if(this.consultas[i].getMedico().getNome().equals(nomeMedico)){
-                total ++;
+
+    public Consulta[] buscarConsultaMedico(String nomeMedico) {
+        int quantidadeDeConsultas = 0;
+        int crm = 0;
+
+        for (int i = 0; i < this.index; i++) {
+            Medico medico = consultas[i].getMedico();
+            if (medico.getNome().equalsIgnoreCase(nomeMedico)) {
+                crm = medico.getCrm();
+                break;
             }
         }
-        Consulta consultasMedico[] = new Consulta[total];
-        int j =0;
-        for(int i=0; i<this.indice;i++){
-            if(this.consultas[i].getMedico().getNome().equals(nomeMedico)){
-                consultasMedico[j] = this.consultas[i];
-                j++;
+
+        if (crm == 0) return new Consulta[0];
+
+        for (int i = 0; i < this.index; i++) {
+            if (consultas[i].getMedico().getCrm() == crm) quantidadeDeConsultas++;
+        }
+
+        Consulta[] consultasMedico = new Consulta[quantidadeDeConsultas];
+        if (quantidadeDeConsultas == 0) return consultasMedico;
+
+        int indexConsulta = 0;
+        for (int i = 0; i < this.index; i++) {
+            if (consultas[i].getMedico().getCrm() == crm){
+                consultasMedico[indexConsulta] = consultas[i];
+                indexConsulta++;
             }
         }
+
         return consultasMedico;
     }
-    public Data buscarConsultaPaciente(int codigo){
-        for(int i=0; i<this.indice; i++){
-            if(this.consultas[i].getPaciente().getCodigo() == codigo){
-                return this.consultas[i].getData();
+
+    public Consulta buscarConsultaPaciente(int codigo) {
+        Consulta primeiraConsultaDoPaciente = null;
+        for (int i = 0; i < this.index; i++) {
+            if (consultas[i].getPaciente().getCodigo() == codigo) {
+                primeiraConsultaDoPaciente = consultas[i];
+                break;
             }
         }
-        return null;
+        return primeiraConsultaDoPaciente;
     }
-    public Consulta[] buscarConsultaData(int dia, int mes, int ano){
-        int total = 0;
-        for(int i=0; i<this.indice; i++){
-            Data data = this.consultas[i].getData();
-            if(data.getDia()==dia && data.getMes()==mes && data.getAno()==ano){
-                total ++;
+
+    public Consulta[] buscarConsultaData(int dia, int mes, int ano) {
+        int quantidadeDeConsultas = 0;
+
+        for (int i = 0; i < this.index; i++) {
+            Data data = consultas[i].getData();
+            if (data.getDia() == dia && data.getMes() == mes && data.getAno() == ano) {
+                quantidadeDeConsultas++;
             }
-        }
-        Consulta consultasData[] = new Consulta[total];
-        int j = 0;
-        for(int i=0; i<this.indice; i++){
-            Data data = this.consultas[i].getData();
-            if(data.getDia()==dia && data.getMes()==mes && data.getAno()==ano){
-                consultasData[j] = this.consultas[i];
-                j++;
-            }
-        }
-        return consultasData;
-    }
-    public double buscarValorConsultasPorEspecialidadeMedica(String especialidade){
-        double soma = 0;
-        for(int i=0; i<this.indice; i++){
-            if(this.consultas[i].getMedico().getEspecialidade().equals(especialidade)){
-                soma += this.consultas[i].getValor();
-            }
-        }
-        return soma;
-    }
-    public void alterarMedico(int nro, Medico medico){
-        if(buscaPosicao(nro) == -1){
-            System.out.println("Número de consulta não encontrado");
-        }else{
-            this.consultas[buscaPosicao(nro)].setMedico(medico);
         }
 
+        Consulta[] consultasFiltradas = new Consulta[quantidadeDeConsultas];
+        int indexConsulta = 0;
+
+        for (int i = 0; i < this.index; i++) {
+            Data data = consultas[i].getData();
+            if (data.getDia() == dia && data.getMes() == mes && data.getAno() == ano) {
+                consultasFiltradas[indexConsulta] = consultas[i];
+                indexConsulta++;
+            }
+        }
+
+        return consultasFiltradas;
     }
+
+    public double buscarValorConsultasPorEspecialidadeMedica(String especialidade) {
+        double valorTotal = 0;
+        for (int i = 0; i < this.index; i++) {
+            String especialidadeMedico = consultas[i].getMedico().getEspecialidade();
+            double valor = consultas[i].getValor();
+            if (especialidadeMedico.equalsIgnoreCase(especialidade)) valorTotal += valor;
+        }
+        return valorTotal;
+    }
+
+    public boolean alterarMedico(int numeroConsulta, Medico medico) {
+        Consulta consulta = buscarConsultaPorNumero(numeroConsulta);
+        if (consulta == null) return false;
+        consulta.setMedico(medico);
+        return true;
+    }
+
     public Consulta buscarConsultaMaisBarata(){
-        Consulta menor = this.consultas[0];
-        for(int i=0; i<this.indice; i++){
-            if(this.consultas[i].getValor() < menor.getValor()){
-                menor = this.consultas[i];
+        if (index == 0) return null;
+        Consulta consultaMenorValor = consultas[0];
+        for (int i = 0; i < this.index; i++) {
+            if (consultas[i].getValor() < consultaMenorValor.getValor()){
+                consultaMenorValor = consultas[i];
             }
         }
-        return menor;
+        return consultaMenorValor;
     }
-    public void mostraAgenda(){
-        for(int i=0; i < this.indice; i++){
-            System.out.println("--------------------");
-            System.out.println(this.consultas[i]);
-        }
-        System.out.println("--------------------");
 
+    public void mostraAgenda() {
+        if (this.index == 0) {
+            System.out.println("Nenhuma consulta agendada.");
+            return;
+        }
+
+        for (int i = 0; i < this.index; i++) {
+            System.out.println(consultas[i]);
+        }
     }
+
 }

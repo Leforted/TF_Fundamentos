@@ -3,61 +3,58 @@ public class Data {
     private int mes;
     private int ano;
 
-    public Data(){
-        this.dia = 0;
-        this.mes = 0;
-        this.ano = 0;
-    }
-    public Data(int dia, int mes, int ano){
+    public Data(int dia, int mes, int ano) {
         this.dia = dia;
         this.mes = mes;
         this.ano = ano;
     }
 
-    public int getDia(){
-        return this.dia;
-    }
-    public int getMes(){
-        return this.mes;
-    }
-    public int getAno(){
-        return this.ano;
+    public int getDia() {
+        return dia;
     }
 
-    public void setDia(int dia){
+    public void setDia(int dia) {
         this.dia = dia;
     }
-    public void setMes(int mes){
+
+    public int getMes() {
+        return mes;
+    }
+
+    public void setMes(int mes) {
         this.mes = mes;
     }
-    public void setAno(int ano){
+
+    public int getAno() {
+        return ano;
+    }
+
+    public void setAno(int ano) {
         this.ano = ano;
     }
 
-    public String toString(){
-        return ("Data: "+this.dia + "/" + this.mes + "/" + this.ano);
+    public static boolean ehAnoBissexto(int ano) {
+        return (ano % 4 == 0 && ano % 100 != 0) || (ano % 400 == 0);
     }
 
-    private boolean ehBissexto(){
-        return (this.ano % 400 == 0 || (this.ano % 4  == 0 && this.ano % 100 != 0));
+    public boolean isValidDate() {
+        if (this.dia < 1 || this.mes < 1 || this.ano < 1 || this.mes > 12) return false;
+
+        int maxNumberDay = switch (mes) {
+            case 1, 3, 5, 7, 8, 10, 12 -> 31;
+            case 4, 6, 9, 11 -> 30;
+            case 2 -> ehAnoBissexto(this.ano) ? 29 : 28;
+            default -> 0;
+        };
+
+        return this.dia <= maxNumberDay;
     }
 
-    public boolean verificaData(){
-        if(this.mes >= 1 && this.mes <= 12){
-            if(this.mes == 4 || this.mes == 6 || this.mes == 9 || this.mes == 11){
-                return (this.dia >= 1 && this.dia <= 30);
-            }
-            else if(this.mes == 2 && ehBissexto()){
-                return (this.dia >= 1 && this.dia <= 29);
-            }
-            else if(this.mes == 2 && !ehBissexto()){
-                return (this.dia >= 1 && this.dia <= 28);
-            }
-            else{
-                return (this.dia >= 1 && this.dia <= 31);
-            }
-        }
-        return false;
+    @Override
+    public String toString() {
+        String dd = (dia < 10 ? "0" + dia : "" + dia);
+        String mm = (mes < 10 ? "0" + mes : "" + mes);
+        return dd + "/" + mm + "/" + ano;
     }
 
 }

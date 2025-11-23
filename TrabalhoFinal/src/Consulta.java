@@ -1,64 +1,64 @@
 public class Consulta {
-    private int nro;
+    private int numero;
     private Data data;
     private Medico medico;
     private Paciente paciente;
-    private Double valor;
+    private double valor;
 
-    public Consulta(){
-        this.nro = 0;
-        this.data = null;
-        this.medico = null;
-        this.paciente = null;
-        this.valor = 0.0;
-    }
-    public Consulta(int nro, Data data, Medico medico, Paciente paciente, Double valor){
-        this.nro = nro;
+    public Consulta(int numero, Data data, Medico medico, Paciente paciente, double valor) {
+        this.numero = numero;
         this.data = data;
         this.medico = medico;
         this.paciente = paciente;
         this.valor = valor;
     }
 
-    public int getNro(){
-        return this.nro;
-    }
-    public Data getData(){
-        return this.data;
-    }
-    public Medico getMedico(){
-        return this.medico;
-    }
-    public Paciente getPaciente(){
-        return this.paciente;
-    }
-    public double getValor(){
-        return this.valor;
+    public int getNro() {
+        return numero;
     }
 
-    public void setNro(int nro){
-        this.nro = nro;
+    public void setNro(int numero) {
+        this.numero = numero;
     }
-    public void setData(Data data){
+
+    public Data getData() {
+        return data;
+    }
+
+    public void setData(Data data) {
         this.data = data;
     }
-    public void setMedico(Medico medico){
+
+    public Medico getMedico() {
+        return medico;
+    }
+
+    public void setMedico(Medico medico) {
         this.medico = medico;
     }
-    public void setPaciente(Paciente paciente){
+
+    public Paciente getPaciente() {
+        return paciente;
+    }
+
+    public void setPaciente(Paciente paciente) {
         this.paciente = paciente;
     }
-    public void setValor(double valor){
+
+    public double getValor() {
+        return valor;
+    }
+
+    public void setValor(double valor) {
         this.valor = valor;
     }
 
-    public String toString(){
-        return ("Número: " + this.nro+
-                "\n" + this.data+
-                "\nMédico:\n" + this.medico+
-                "\nPaciente:\n" + this.paciente+
-                "\nValor: " + this.valor);
+    @Override
+    public String toString() {
+        return "Consulta [Nro=" + numero +
+                ", Data=" + data +
+                ", Médico=" + medico +
+                ", Paciente=" + paciente +
+                ", Valor=R$ " + valor + "]";
     }
-
-
 }
