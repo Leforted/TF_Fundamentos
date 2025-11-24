@@ -37,7 +37,7 @@ public class Medico {
     
     @Override
     public String toString() {
-        return "Médico [CRM=" + crm + ", Nome=" + nome + ", Especialidade=" + especialidade + "]";
+        return "[CRM=" + crm + ", Nome=" + nome + ", Especialidade=" + especialidade + "]";
     }
 
 
