@@ -26,7 +26,9 @@ public class Application {
             switch (opcao) {
                 case 1: {
                     if (agenda.getIndex() == 40) {
+                        System.out.println();
                         System.out.println("A agenda está lotada!");
+                        System.out.println();
                         continue;
                     }
                     System.out.println();
@@ -79,7 +81,9 @@ public class Application {
                     int numero = sc.nextInt();
                     sc.nextLine();
                     if (!agenda.removerConsulta(numero)) {
+                        System.out.println();
                         System.out.println("Consulta não encontrada.");
+                        System.out.println();
                         continue;
                     }
                     System.out.println("Consulta removida!");
@@ -112,7 +116,9 @@ public class Application {
                     Consulta consulta = agenda.buscarConsultaPaciente(codigo);
 
                     if (consulta == null) {
+                        System.out.println();
                         System.out.println("Paciente não tem consultas agendadas");
+                        System.out.println();
                         continue;
                     }
 
@@ -132,14 +138,18 @@ public class Application {
 
                     Data data = new Data(dia, mes, ano);
                     if (!data.isValidDate()) {
+                        System.out.println();
                         System.out.println("Data inválida");
+                        System.out.println();
                         continue;
                     }
 
                     Consulta[] consultas = agenda.buscarConsultaData(dia, mes, ano);
 
                     if (consultas.length == 0) {
+                        System.out.println();
                         System.out.println("Não há consultas nessa data");
+                        System.out.println();
                         continue;
                     }
 
@@ -167,7 +177,9 @@ public class Application {
                     sc.nextLine();
 
                     if (agenda.buscarConsultaPorNumero(numero) == null) {
+                        System.out.println();
                         System.out.println("Consulta não existe");
+                        System.out.println();
                         continue;
                     }
 
@@ -188,7 +200,9 @@ public class Application {
                     Consulta consulta = agenda.buscarConsultaMaisBarata();
 
                     if (consulta == null) {
+                        System.out.println();
                         System.out.println("Não há consultas cadastradas");
+                        System.out.println();
                         continue;
                     }
 
